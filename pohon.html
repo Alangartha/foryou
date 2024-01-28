@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+    <title>Turtle Animation</title>
+  </head>
+  <body>
+    <canvas id="turtleCanvas"></canvas>
+
+    <script>
+      const canvas = document.getElementById("turtleCanvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const turtle = {
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        angle: 90,
+        length: 60,
+        speed: 5,
+      };
+
+      function drawLove(i) {
+        if (i < 10) {
+          return;
+        } else {
+          ctx.beginPath();
+          ctx.moveTo(turtle.x, turtle.y);
+          ctx.lineTo(
+            turtle.x + Math.cos((turtle.angle * Math.PI) / 180) * i,
+            turtle.y + Math.sin((turtle.angle * Math.PI) / 180) * i
+          );
+          ctx.strokeStyle = "yellow";
+          ctx.stroke();
+          ctx.closePath();
+
+          turtle.x += Math.cos((turtle.angle * Math.PI) / 180) * i;
+          turtle.y += Math.sin((turtle.angle * Math.PI) / 180) * i;
+
+          turtle.angle -= 30;
+          drawLove((3 * i) / 4);
+
+          turtle.angle += 60;
+          drawLove((3 * i) / 4);
+
+          turtle.angle -= 30;
+          turtle.x -= Math.cos((turtle.angle * Math.PI) / 180) * i;
+          turtle.y -= Math.sin((turtle.angle * Math.PI) / 180) * i;
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawLove(turtle.length);
+
+        turtle.length -= 0.5;
+
+        if (turtle.length > 0) {
+          requestAnimationFrame(animate);
+        }
+      }
+
+      animate();
+    </script>
+  </body>
+</html>
